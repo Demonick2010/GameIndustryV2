@@ -1,0 +1,14 @@
+﻿@page "/"
+@page "/index"
+@inject IRepository _db
+
+<GameList ListOfItems="GameItemsList" />
+
+@code {
+    List<Game> GameItemsList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        GameItemsList = _db.GetAllGames();
+    }
+}

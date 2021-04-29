@@ -1,0 +1,35 @@
+﻿
+<div class="col-sm-12 col-md-4 p-3 text-center">
+    <div class="game-name">
+        <a href="@url">@Game.ShortName</a>
+    </div>
+
+
+    <hr class="hrfix" />
+    <div class="card-image">
+        <a href="@url">
+            <img src="@Game.Image" alt="@Game.Name" class="game-image" />
+        </a>
+    </div>
+
+    <hr class="hrfix" />
+    <div class="game-card-footer">
+        <div class="btn-group my-3 text-center" role="group">
+            <a class="btn btn-outline-info" href="#"><i class="fas fa-edit"></i></a>
+            <button type="button" class="btn btn-outline-danger" @onclick="(() => OnDeleteGame.InvokeAsync(Game))">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter] public Game Game { get; set; }
+    [Parameter] public EventCallback<Game> OnDeleteGame { get; set; }
+
+    string url = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        url = $"games/{Game.Id}/{Game.Name.Replace(" ", "-")}";
+    }
+}

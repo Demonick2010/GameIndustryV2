@@ -1,0 +1,34 @@
+﻿@if (ListOfItems is null)
+{
+    <div class="row text-center">
+        <div class="col">
+            <img src="https://media0.giphy.com/media/10GRk3KHYv2W6hmJG/giphy.gif" height="500" />
+        </div>
+    </div>
+}
+else if (ListOfItems.Count == 0)
+{
+    <div class="row text-center">
+        <div class="col">
+            <img src="https://tzimasparts.com/images/noitemstoshow.jpg" height="500" />
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in ListOfItems)
+        {
+            <IndividualGame Game="item" OnDeleteGame="DeleteGame" />
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public List<Game> ListOfItems { get; set; }
+
+    void DeleteGame(Game game)
+    {
+        ListOfItems.Remove(game);
+    }
+}

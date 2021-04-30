@@ -1,0 +1,21 @@
+﻿@page "/games/create"
+
+@inject NavigationManager navManager
+
+<div class="row">
+    <div class="col">
+        <h1 class="text-info text-center text-uppercase">Create Game</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col text-center">
+        <button @onclick="AddNewGame" class="btn btn-primary">Add New Game</button>
+    </div>
+</div>
+
+@code {
+    void AddNewGame()
+    {
+        navManager.NavigateTo("games");
+    }
+}

@@ -9,7 +9,7 @@ namespace GameIndustryV2.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Genre { get; set; }
+        public int GenreId { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string Image { get; set; }
         public string ShortName

@@ -7,10 +7,15 @@
 </div>
 <div class="row">
     <div class="col-6">
-
+        <FormForGenre Genre="genre" OnValidSubmit="Create" />
     </div>
 </div>
 
 @code {
+    Genre genre = new();
 
+    void Create()
+    {
+        Console.WriteLine(genre.Name);
+    }
 }

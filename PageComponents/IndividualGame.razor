@@ -1,4 +1,5 @@
-﻿
+﻿@using System.Text.RegularExpressions
+
 <div class="col-sm-12 col-md-4 p-3 text-center">
     <div class="game-name">
         <a href="@url">@Game.ShortName</a>
@@ -8,7 +9,14 @@
     <hr class="hrfix" />
     <div class="card-image">
         <a href="@url">
-            <img src="@Game.Image" alt="@Game.Name" class="game-image" />
+            @if (IsBase64(Game.Image))
+            {
+                <img src="data:image/jpeg;base64,@Game.Image" class="game-image" />
+            }
+            else
+            {
+                <img src="@Game.Image" alt="@Game.Name" class="game-image" />
+            }
         </a>
     </div>
 
@@ -30,6 +38,13 @@
 
     protected override void OnInitialized()
     {
-        url = $"games/{Game.Id}/{Game.Name.Replace(" ", "-")}";
+        //url = $"games/{Game.Id}/{Game.Name.Replace(" ", "-")}";
+        url = $"games/{Game.Id}/{Uri.EscapeDataString(Game.Name)}";
+    }
+
+    bool IsBase64(string value)
+    {
+        value = value.Trim();
+        return ((value.Length % 4 == 0) && Regex.IsMatch(value, @"^[a-zA-Z0-9\+/]*={0,3}$", RegexOptions.None));
     }
 }

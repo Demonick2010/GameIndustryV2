@@ -1,6 +1,7 @@
 ﻿@page "/games/create"
 
 @inject NavigationManager navManager
+@inject IRepository _db
 
 <div class="row">
     <div class="col">
@@ -8,14 +9,19 @@
     </div>
 </div>
 <div class="row">
-    <div class="col text-center">
-        <button @onclick="AddNewGame" class="btn btn-primary">Add New Game</button>
+    <div class="col">
+        <GameForm Game="game" OnValidSubmit="AddNewGame" />
     </div>
 </div>
 
 @code {
+    Game game = new();
+
     void AddNewGame()
     {
-        navManager.NavigateTo("games");
+        bool result = _db.CreateNewGame(game);
+
+        if (result)
+            navManager.NavigateTo("/");
     }
 }

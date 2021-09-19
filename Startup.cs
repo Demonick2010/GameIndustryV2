@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Tewr.Blazor.FileReader;
 
 namespace GameIndustryV2
 {
@@ -24,6 +25,8 @@ namespace GameIndustryV2
             services.AddServerSideBlazor();
 
             services.AddScoped<IRepository, MockGamesRepository>();
+
+            services.AddFileReaderService(options => options.InitializeOnFirstCall = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

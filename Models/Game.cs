@@ -1,16 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace GameIndustryV2.Models
 {
     public class Game
     {
         public int Id { get; set; }
+        [Required]
+        [MinLength(3), MaxLength(50)]
         public string Name { get; set; }
+        [Required]
+        [MinLength(3), MaxLength(500)]
+        public string Description { get; set; }
+        public bool InSale { get; set; }
+        public string GamePlayVideo { get; set; }
+
         public int GenreId { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        [Required]
+        public DateTime? ReleaseDate { get; set; }
         public string Image { get; set; }
         public string ShortName
         {

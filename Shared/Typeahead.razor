@@ -1,0 +1,153 @@
+﻿@using System.Timers
+@typeparam TItem
+
+<div class="typeahead">
+    <div class="typeahead-controls">
+        <input type="text" class="typeahead-input" autocomplete="off"
+               placeholder="@OnPlaceHolder"
+               @bind-value="@SearchText"
+               @bind-value:event="oninput"
+               @onclick="ShowResults"
+               @onfocusout="FocusOut" />
+    </div>
+    @if (isSearching)
+    {
+        <div class="typeahead-all-results">
+            <div class="typeahead-result">
+                <span>Loading ...</span>
+            </div>
+        </div>
+    }
+    else if (ShowAllResults())
+    {
+        <div class="typeahead-all-results">
+            @foreach (var item in results)
+            {
+                <div @key="@item" class="typeahead-result" tabindex="0"
+                        @onclick="@(() => SelectResult(item))"
+                        @onmouseover="MouseOverHandler"
+                        @onmouseout="MouseOutHandler">
+                        @ResultTemplate(item)
+                </div>
+            }
+        </div>
+    }
+    else if (NotFound())
+    {
+         <div class="typeahead-all-results">
+           @if (NotFoundTemplate is not null)
+            {
+                <div class="typeahead-notfound">
+                    @NotFoundTemplate
+                </div>
+            }
+            else
+            {
+                <div class="typeahead-notfound">
+                    <span>No results ...</span>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string OnPlaceHolder { get; set; }
+    [Parameter] public int OnMinimalLenght { get; set; } = 3;
+    [Parameter] public int OnTimerInterval { get; set; } = 300;
+
+    [Parameter] public EventCallback<TItem> OnValueChangedHandler { get; set; }
+    [Parameter] public Func<string, Task<IEnumerable<TItem>>> OnSearchHandler { get; set; }
+
+    [Parameter] public RenderFragment<TItem> ResultTemplate { get; set;}
+    [Parameter] public RenderFragment NotFoundTemplate { get; set;}
+
+    protected List<TItem> results = new();
+
+    bool isSearching;
+    bool showingAllResults;
+    bool isMouseOver;
+    Timer timer;
+
+    string searchText = string.Empty;
+    string SearchText
+    {
+        get => searchText;
+        set
+        {
+            searchText = value;
+
+            if (value.Length.Equals(0))
+            {
+                showingAllResults = false;
+                timer.Stop();
+                results = new();
+            }
+            else if (value.Length >= OnMinimalLenght)
+            {
+                timer.Stop();
+                timer.Start();
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        timer = new();
+        timer.Interval = OnTimerInterval;
+        timer.AutoReset = false;
+        timer.Elapsed += Search;
+    }
+
+    protected async void Search(object sender, ElapsedEventArgs args)
+    {
+        isSearching = true;
+        showingAllResults = false;
+        await InvokeAsync(StateHasChanged);
+
+        results = (await OnSearchHandler.Invoke(searchText)).ToList();
+
+        isSearching = false;
+        showingAllResults = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    void ShowResults()
+    {
+        if (results.Any())
+            showingAllResults = true;
+    }
+
+    void FocusOut()
+    {
+        if (!isMouseOver)
+            showingAllResults = false;
+    }
+
+    bool ShowAllResults()
+    {
+        return showingAllResults && results.Any();
+    }
+
+    async Task SelectResult (TItem item)
+    {
+        SearchText = string.Empty;
+
+        await OnValueChangedHandler.InvokeAsync(item);
+    }
+
+    bool NotFound() 
+    {
+        return !results.Any() && showingAllResults;
+    }
+
+    void MouseOverHandler()
+    {
+        isMouseOver = true;
+    }
+
+    void MouseOutHandler()
+    {
+        isMouseOver = false;
+    }
+}

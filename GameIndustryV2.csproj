@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,8 +9,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Markdig" Version="0.25.0" />
-    <PackageReference Include="Tewr.Blazor.FileReader" Version="3.2.0.21211" />
+    <PackageReference Include="Markdig" Version="0.26.0" />
+    <PackageReference Include="Tewr.Blazor.FileReader" Version="3.3.0.21348" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="PageComponents\Typeahead.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="PageComponents\Typeahead.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Shared\Typeahead.razor" />
   </ItemGroup>
 
 </Project>

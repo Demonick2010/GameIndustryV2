@@ -2,6 +2,12 @@
 @page "/index"
 @inject IRepository _db
 
+<Typeahead OnSearchHandler="SearchHandler">
+    <ResultTemplate>
+        @context
+    </ResultTemplate>
+</Typeahead>
+    
 <GameList ListOfItems="GameItemsList" />
 
 @code {
@@ -10,5 +16,19 @@
     protected override async Task OnInitializedAsync()
     {
         GameItemsList = _db.GetAllGames();
+    }
+
+    async Task<IEnumerable<string>> SearchHandler(string searchText)
+    {
+        await Task.Delay(2000);
+
+        if (searchText.Equals("test"))
+            return Enumerable.Empty<string>();
+
+        return new List<string>()
+        {
+            "CD Project Red",
+            "Giants Software"
+        };
     }
 }

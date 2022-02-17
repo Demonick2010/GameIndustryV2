@@ -14,5 +14,6 @@ namespace GameIndustryV2.Repository
         List<Genre> GetAllGenres();
         Genre GetGenreById(int id);
         bool EditGenre(Genre editedGenre);
+        List<GameDeveloper> GetAllDevelopers();
     }
 }

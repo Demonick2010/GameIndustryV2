@@ -1,6 +1,8 @@
+using DbAccess;
 using GameIndustryV2.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,10 +23,13 @@ namespace GameIndustryV2
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                          options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddScoped<IRepository, MockGamesRepository>();
+            services.AddScoped<IRepository, SqlGameRepository>();
 
             services.AddFileReaderService(options => options.InitializeOnFirstCall = true);
         }

@@ -1,4 +1,4 @@
-﻿using GameIndustryV2.Models;
+﻿using DbAccess.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

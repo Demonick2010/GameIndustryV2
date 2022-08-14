@@ -23,7 +23,7 @@
             <div class="col">
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="featureReleaseId" @bind="featureRelease" />
-                    <label class="custom-control-label" for="featureReleaseId">Feature Release?</label>
+                    <label class="custom-control-label" for="featureReleaseId">Future Release?</label>
                 </div>
             </div>
             <div class="col">
@@ -77,9 +77,9 @@
         if (!string.IsNullOrWhiteSpace(gameName))
             Games = Games.Where(x => x.Name.ToLower().Contains(gameName.ToLower())).ToList();
         if (selectedGameGenre != "-1")
-            Games = Games.Where(x => x.GenreId.ToString().Equals(selectedGameGenre)).ToList();
-        if (featureRelease)
-            Games = Games.Where(x => x.ReleaseDate > DateTime.Now).ToList();
+            //Games = Games.Where(x => x.GenreId.ToString().Equals(selectedGameGenre)).ToList();
+            if (featureRelease)
+                Games = Games.Where(x => x.ReleaseDate > DateTime.Now).ToList();
         if (canBay)
             Games = Games.Where(x => x.ReleaseDate <= DateTime.Now).ToList();
 

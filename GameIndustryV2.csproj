@@ -5,11 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <Compile Remove="Data\**" />
+    <Content Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Markdig" Version="0.26.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Tewr.Blazor.FileReader" Version="3.3.0.21348" />
   </ItemGroup>
 
@@ -23,6 +30,10 @@
 
   <ItemGroup>
     <None Include="Shared\Typeahead.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DbAccess\DbAccess.csproj" />
   </ItemGroup>
 
 </Project>
